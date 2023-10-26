@@ -1,48 +1,47 @@
-package EPIC;
+package epic;
+
+import java.util.List;
 
 public class Question {
-    private String category;
-    private String difficulty;
     private String questionText;
-    private String[] options;
-    private String correctAnswer;
-    private boolean answeredCorrectly;
+    private String[] answers;
+    private int score;
+	private String correctAnswer;
+	private List<String> correctAnswers; // For multiple-choice questions
 
-    public Question(String category, String difficulty, String questionText, String[] options, String correctAnswer) {
-        this.category = category;
-        this.difficulty = difficulty;
+    // for multiple-choice questions
+    public Question(String questionText, String[] answers, int correctAnswerIndex, int score) {
         this.questionText = questionText;
-        this.options = options;
+        this.answers = answers;
+        this.correctAnswer = answers[correctAnswerIndex]; // Store the correct answer
+        this.score = score;
+    }
+    
+    //for one answer
+    public Question(String questionText, String correctAnswer, int score) {
+        this.questionText = questionText;
         this.correctAnswer = correctAnswer;
-        this.answeredCorrectly = false;
+        this.score = score;
+    }
+    
+ // for multiple-answer questions
+    public Question(String questionText, String[] answerChoices, List<String> correctAnswers, int score) {
+        this.questionText = questionText;
+        this.answers = answerChoices;
+        this.correctAnswers = correctAnswers;
+        this.score = score;
+    }
+    
+    //for correct answer and score 
+    public boolean isCorrect(String userAnswer) {
+        if (correctAnswer != null) {
+            return userAnswer.equalsIgnoreCase(correctAnswer);
+        } else if (correctAnswers != null) {
+            return correctAnswers.contains(userAnswer);
+        } else {
+            return false; 
+        }
     }
 
-    // Getters and Setters
-    public String getCategory() {
-        return category;
-    }
-
-    public String getDifficulty() {
-        return difficulty;
-    }
-
-    public String getQuestionText() {
-        return questionText;
-    }
-
-    public String[] getOptions() {
-        return options;
-    }
-
-    public String getCorrectAnswer() {
-        return correctAnswer;
-    }
-
-    public boolean isAnsweredCorrectly() {
-        return answeredCorrectly;
-    }
-
-    public void setAnsweredCorrectly(boolean answeredCorrectly) {
-        this.answeredCorrectly = answeredCorrectly;
-    }
+    
 }
